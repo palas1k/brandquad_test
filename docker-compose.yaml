@@ -16,10 +16,11 @@ services:
       retries: 5
     networks:
       - base_network
+
   migrations:
     build: .
     env_file: .env
-    command: poetry run python manage.py migrate
+    command: python manage.py migrate
     networks:
       - base_network
     depends_on:
@@ -32,14 +33,12 @@ services:
       - .env
     ports:
       - "8000:8000"
-    command: python manage.py runserver
+    command: python manage.py runserver 0.0.0.0:8000
     networks:
       - base_network
     depends_on:
       postgres:
         condition: service_healthy
-      migrations:
-        condition: service_completed_successfully
 
 networks:
   base_network:
